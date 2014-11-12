@@ -1,2 +1,9 @@
 rootProject.name = 'autoconfig'
 
+include "api"
+include "compiler"
+
+// samples
+
+include "sample:config"
+include "sample:main"

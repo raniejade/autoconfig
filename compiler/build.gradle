@@ -1,0 +1,7 @@
+apply from: "$rootDir/gradle/java.gradle"
+
+dependencies {
+    compile project(":api")
+    compile "com.google.auto:auto-common:0.3"
+    compile "com.squareup:javawriter:2.5.0"
+}

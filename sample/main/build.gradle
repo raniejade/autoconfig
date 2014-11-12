@@ -1,0 +1,12 @@
+apply from: "$rootDir/gradle/java.gradle"
+
+apply plugin: 'application'
+
+mainClassName = "com.raniejaderamiso.autoconfig.sample.Main"
+
+dependencies {
+    compile project(":sample:config")
+    compile project(":compiler")
+
+    compile project(":api")
+}
