@@ -5,7 +5,7 @@ Generate config classes from properties file.
 @AutoConfig(
     resourceDir = StandardLocation.CLASS_PATH,
     packageName = "com.example",
-    filename = "config.properties
+    filename = "config.properties"
 )
 public interface AppConfig {
     @Property(key = "config.some.int")
