@@ -12,8 +12,6 @@ publishing {
     }
 
     repositories {
-        maven {
-
-        }
+        mavenCentral()
     }
 }
