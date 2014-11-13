@@ -1,6 +1,15 @@
 apply plugin: 'maven'
 apply plugin: 'signing'
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
@@ -11,6 +20,7 @@ uploadArchives {
             }
 
             pom.project {
+                name "autoconfig-${project.name}"
                 groupId = 'com.raniejaderamiso'
                 url 'https://github.com/raniejade/autoconfig'
 
@@ -34,6 +44,10 @@ uploadArchives {
             }
         }
     }
+}
+
+artifacts {
+    archives javadocJar, sourceJar
 }
 
 gradle.taskGraph.whenReady { taskGraph ->
