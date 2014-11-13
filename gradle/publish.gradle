@@ -1,0 +1,19 @@
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId "com.raniejaderamiso"
+            artifactId project.artifactId
+            version "${autoConfigVersion}"
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+
+        }
+    }
+}
