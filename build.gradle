@@ -1,0 +1,4 @@
+subprojects {
+    project.version = ext.autoConfigVersion
+    project.group = 'com.raniejaderamiso'
+}

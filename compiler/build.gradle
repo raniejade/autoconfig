@@ -1,7 +1,9 @@
 apply from: "$rootDir/gradle/java.gradle"
 apply from: "$rootDir/gradle/publish.gradle"
 
-ext.artifactId = "autoconfig-compiler"
+jar {
+    baseName = 'autoconfig-compiler'
+}
 
 dependencies {
     compile project(":api")

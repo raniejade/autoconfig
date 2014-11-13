@@ -1,17 +1,50 @@
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId "com.raniejaderamiso"
-            artifactId project.artifactId
-            version "${autoConfigVersion}"
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            from components.java
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(username: osshrUsername, password: osshrPassword)
+            }
+
+            pom.project {
+                groupId = 'com.raniejaderamiso'
+                url 'https://github.com/raniejade/autoconfig'
+
+                scm {
+                    connection 'scm:git:git@github.com:raniejade/autoconfig.git'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name 'Ranie Jade Ramiso'
+                        email 'raniejaderamiso@gmail.com'
+                    }
+                }
+            }
         }
     }
+}
 
-    repositories {
-        mavenCentral()
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.allTasks.any { it instanceof Sign }) {
+        allprojects { ext."signing.keyId" = signingKeyId }
+        allprojects { ext."signing.secretKeyRingFile" = signingKeyFile }
+        allprojects { ext."signing.password" = signingPassword }
     }
+}
+
+
+signing {
+    sign configurations.archives
 }
