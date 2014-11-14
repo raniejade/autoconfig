@@ -6,7 +6,7 @@ mainClassName = "com.raniejaderamiso.autoconfig.sample.Main"
 
 dependencies {
     compile project(":sample:config")
-    compile project(":compiler")
+    compile project(":autoconfig-compiler")
 
-    compile project(":api")
+    compile project(":autoconfig")
 }

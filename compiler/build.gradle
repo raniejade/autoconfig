@@ -1,12 +1,8 @@
 apply from: "$rootDir/gradle/java.gradle"
 apply from: "$rootDir/gradle/publish.gradle"
 
-jar {
-    baseName = 'autoconfig-compiler'
-}
-
 dependencies {
-    compile project(":api")
+    compile project(":autoconfig")
     compile "com.google.auto:auto-common:0.3"
     compile "com.squareup:javawriter:2.5.0"
 }
