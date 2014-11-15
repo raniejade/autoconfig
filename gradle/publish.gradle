@@ -21,11 +21,13 @@ uploadArchives {
 
             pom.project {
                 name "autoconfig-${project.name}"
+                description "${project.description}"
                 groupId = 'com.raniejaderamiso'
                 url 'https://github.com/raniejade/autoconfig'
 
                 scm {
                     connection 'scm:git:git@github.com:raniejade/autoconfig.git'
+                    url 'https://github.com/raniejade/autoconfig'
                 }
 
                 licenses {
