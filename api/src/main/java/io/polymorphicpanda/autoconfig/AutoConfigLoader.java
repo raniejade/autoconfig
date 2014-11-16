@@ -22,7 +22,7 @@ public final class AutoConfigLoader {
 
         try {
             return (T) classLoader.loadClass(generatedClassName).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
