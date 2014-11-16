@@ -1,6 +1,5 @@
-package com.raniejaderamiso.autoconfig;
+package io.polymorphicpanda.autoconfig;
 
-import javax.tools.StandardLocation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,13 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotate method to mark it as a target for source generation.
+ *
  * @author Ranie Jade Ramiso
  */
 @Documented
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface AutoConfig {
-    String packageName() default "";
-    String filename();
-    StandardLocation resourceDir();
+public @interface Property {
+    /**
+     * The key used to fetch the return value of the generated method.
+     */
+    String key();
 }

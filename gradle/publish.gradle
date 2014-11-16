@@ -24,7 +24,7 @@ uploadArchives {
             pom.project {
                 name "autoconfig-${project.name}"
                 description "${project.description}"
-                groupId = 'com.raniejaderamiso'
+                groupId = 'io.polymorphicpanda'
                 url 'https://github.com/raniejade/autoconfig'
 
                 scm {

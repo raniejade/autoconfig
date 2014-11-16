@@ -1,4 +1,4 @@
-package com.raniejaderamiso.autoconfig.compiler;
+package io.polymorphicpanda.autoconfig.compiler;
 
 import javax.annotation.Generated;
 import javax.annotation.processing.Messager;
@@ -28,7 +28,7 @@ import java.util.Set;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
 import com.google.auto.common.Visibility;
-import com.raniejaderamiso.autoconfig.Property;
+import io.polymorphicpanda.autoconfig.Property;
 import com.squareup.javawriter.JavaWriter;
 
 /**
@@ -101,7 +101,7 @@ public class AutoConfigClassGenerator {
                 break;
         }
 
-        classWriter.emitAnnotation(Generated.class, new String[] {"\"com.raniejaderamiso.autoconfig.AutoConfigProcessor\""});
+        classWriter.emitAnnotation(Generated.class, new String[] {"\"io.polymorphicpanda.autoconfig.AutoConfigProcessor\""});
         classWriter.beginType(
             className, "class", EnumSet.of(modifier, Modifier.FINAL),
             null, element.getSimpleName().toString()

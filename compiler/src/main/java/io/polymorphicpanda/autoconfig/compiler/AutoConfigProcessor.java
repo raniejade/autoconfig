@@ -1,4 +1,4 @@
-package com.raniejaderamiso.autoconfig.compiler;
+package io.polymorphicpanda.autoconfig.compiler;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -24,7 +24,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import com.google.auto.common.MoreElements;
-import com.raniejaderamiso.autoconfig.AutoConfig;
+import io.polymorphicpanda.autoconfig.AutoConfig;
+import io.polymorphicpanda.autoconfig.AutoConfigLoader;
 
 import static javax.tools.Diagnostic.Kind;
 
@@ -32,10 +33,9 @@ import static javax.tools.Diagnostic.Kind;
  * @author Ranie Jade Ramiso
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedAnnotationTypes("com.raniejaderamiso.autoconfig.AutoConfig")
+@SupportedAnnotationTypes("io.polymorphicpanda.autoconfig.AutoConfig")
 public class AutoConfigProcessor extends AbstractProcessor implements Messager {
 
-    public static final String GENERATED_CLASS_SUFFIX = "$$AutoConfig";
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
@@ -92,9 +92,9 @@ public class AutoConfigProcessor extends AbstractProcessor implements Messager {
 
         try {
             final ResourceBundle bundle = getBundle(filer,config);
+            final String className = getGeneratedClassQualifiedName(element);
 
-            final JavaFileObject fileObject = filer.createSourceFile(getGeneratedClassQualifiedName(element));
-            final String className = element.getSimpleName().toString() + GENERATED_CLASS_SUFFIX;
+            final JavaFileObject fileObject = filer.createSourceFile(className);
 
             final AutoConfigClassGenerator generator = new AutoConfigClassGenerator(element, this, bundle);
 
@@ -107,7 +107,7 @@ public class AutoConfigProcessor extends AbstractProcessor implements Messager {
     }
 
     private String getGeneratedClassQualifiedName(TypeElement element) {
-        return element.getQualifiedName().toString() + GENERATED_CLASS_SUFFIX;
+        return element.getQualifiedName().toString() + AutoConfigLoader.GENERATED_CLASS_SUFFIX;
     }
 
     private boolean isInterface(Element element) {
