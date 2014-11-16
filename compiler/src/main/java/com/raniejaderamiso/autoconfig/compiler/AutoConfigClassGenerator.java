@@ -4,6 +4,7 @@ import javax.annotation.Generated;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
@@ -12,12 +13,17 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementKindVisitor8;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
@@ -54,6 +60,35 @@ public class AutoConfigClassGenerator {
 
         classWriter.emitPackage(packageElement.toString());
 
+        final ClassBlueprintBuilder builder = new ClassBlueprintBuilder();
+
+        for (Element e: element.getEnclosedElements()) {
+            e.accept(builder, null);
+        }
+
+        final ClassBlueprint blueprint = builder.build();
+
+        final String packageQualifiedName = packageElement.getQualifiedName().toString();
+
+        // generate imports
+        for (TypeMirror importType: blueprint.getImports()) {
+            if (importType.getKind() == TypeKind.DECLARED) {
+                final TypeElement typeElement = MoreTypes.asTypeElement(processingEnv.getTypeUtils(), importType);
+
+                if (typeElement.getKind() == ElementKind.ENUM) {
+                    final String importQualifiedName = typeElement.getQualifiedName().toString();
+                    final String importSimpleName = typeElement.getSimpleName().toString();
+
+                    // ignore import if same package
+                    if (!(packageQualifiedName + "." + importSimpleName).equals(importQualifiedName)) {
+                        classWriter.emitImports(importQualifiedName);
+                    }
+                }
+            }
+        }
+
+        classWriter.emitEmptyLine();
+
         Modifier modifier;
 
         switch (visibility) {
@@ -72,22 +107,13 @@ public class AutoConfigClassGenerator {
             null, element.getSimpleName().toString()
         );
 
-        List<? extends Element> members = processingEnv.getElementUtils().getAllMembers(element);
+        for (Map.Entry<Property, ExecutableElement> entry: blueprint.getMethods().entrySet()) {
+            final Property property = entry.getKey();
+            final ExecutableElement executableElement = entry.getValue();
 
-        for (Element member: members) {
-            final TypeMirror typeMirror = member.asType();
-
-            if (typeMirror.getKind() == TypeKind.EXECUTABLE) {
-                final Property property = member.getAnnotation(Property.class);
-
-                if (property != null) {
-                    classWriter.emitAnnotation(Override.class);
-                    writeMethod(
-                        classWriter, MoreElements.asExecutable(member), MoreTypes.asExecutable(typeMirror), property
-                    );
-                    classWriter.emitEmptyLine();
-                }
-            }
+            classWriter.emitAnnotation(Override.class);
+            writeMethod(classWriter, executableElement, property, processingEnv);
+            classWriter.emitEmptyLine();
         }
         classWriter.endType();
         classWriter.close();
@@ -99,9 +125,10 @@ public class AutoConfigClassGenerator {
         }
     }
 
-    private void writeMethod(JavaWriter writer, ExecutableElement element,
-                             ExecutableType type, Property property) throws IOException {
+    private void writeMethod(JavaWriter writer, ExecutableElement element, Property property,
+                             ProcessingEnvironment processingEnv) throws IOException {
 
+        final ExecutableType type = MoreTypes.asExecutable(element.asType());
         final TypeMirror returnType = type.getReturnType();
         final Name simpleName = element.getSimpleName();
 
@@ -114,8 +141,14 @@ public class AutoConfigClassGenerator {
         writer.emitSingleLineComment("Generated from key '%s'.", property.key());
         if (returnTypeKind.isPrimitive()) {
             writePrimitiveReturn(writer, property, returnTypeKind);
-        } else if (returnTypeKind == TypeKind.DECLARED && MoreTypes.isTypeOf(String.class, returnType)) {
-            writeStringReturn(writer, property);
+        } else if (returnTypeKind == TypeKind.DECLARED) {
+            final TypeElement elementType = MoreTypes.asTypeElement(processingEnv.getTypeUtils(), returnType);
+
+            if (MoreTypes.isTypeOf(String.class, returnType)) {
+                writeStringReturn(writer, property);
+            } else if (elementType.getKind() == ElementKind.ENUM) {
+                writeEnumConstantReturn(writer, property);
+            }
         }
 
         writer.endMethod();
@@ -138,7 +171,33 @@ public class AutoConfigClassGenerator {
         writer.emitStatement("return \"%s\"", getValue(property.key()));
     }
 
+    private void writeEnumConstantReturn(JavaWriter writer, Property property) throws IOException {
+        writer.emitStatement("return %s", getValue(property.key()));
+    }
+
     private String getValue(String key) {
         return bundle.getString(key);
+    }
+
+    private class ClassBlueprintBuilder extends ElementKindVisitor8<Void, Void> {
+        private final Set<TypeMirror> imports = new HashSet<>();
+        private final Map<Property, ExecutableElement> methods = new HashMap<>();
+
+        @Override
+        public Void visitExecutableAsMethod(ExecutableElement e, Void aVoid) {
+            final Property property = e.getAnnotation(Property.class);
+
+            if (property != null && e.getParameters().isEmpty()) {
+                final TypeMirror returnType = e.getReturnType();
+                imports.add(returnType);
+
+                methods.put(property, e);
+            }
+            return null;
+        }
+
+        public ClassBlueprint build() {
+            return new ClassBlueprint(imports, methods);
+        }
     }
 }
