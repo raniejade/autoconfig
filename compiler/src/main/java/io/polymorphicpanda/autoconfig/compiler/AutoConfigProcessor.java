@@ -32,7 +32,7 @@ import static javax.tools.Diagnostic.Kind;
 /**
  * @author Ranie Jade Ramiso
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes("io.polymorphicpanda.autoconfig.AutoConfig")
 public class AutoConfigProcessor extends AbstractProcessor implements Messager {
 
@@ -132,9 +132,14 @@ public class AutoConfigProcessor extends AbstractProcessor implements Messager {
 
         // ? annotation processor path ?
         final FileObject fileObject = filer.getResource(config.resourceDir(), config.packageName(), config.filename());
-
-        try (InputStream inputStream = fileObject.openInputStream()) {
+        InputStream inputStream = null;
+        try {
+            inputStream = fileObject.openInputStream();
             return new PropertyResourceBundle(inputStream);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
     }
 }

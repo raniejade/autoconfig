@@ -13,7 +13,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementKindVisitor8;
+import javax.lang.model.util.ElementKindVisitor6;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
@@ -179,9 +179,9 @@ public class AutoConfigClassGenerator {
         return bundle.getString(key);
     }
 
-    private class ClassBlueprintBuilder extends ElementKindVisitor8<Void, Void> {
-        private final Set<TypeMirror> imports = new HashSet<>();
-        private final Map<Property, ExecutableElement> methods = new HashMap<>();
+    private class ClassBlueprintBuilder extends ElementKindVisitor6<Void, Void> {
+        private final Set<TypeMirror> imports = new HashSet<TypeMirror>();
+        private final Map<Property, ExecutableElement> methods = new HashMap<Property, ExecutableElement>();
 
         @Override
         public Void visitExecutableAsMethod(ExecutableElement e, Void aVoid) {
