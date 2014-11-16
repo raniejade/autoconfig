@@ -1,10 +1,10 @@
-package com.raniejaderamiso.autoconfig.sample;
+package io.polymorphicpanda.autoconfig.sample;
 
 import javax.tools.StandardLocation;
 
-import com.raniejaderamiso.autoconfig.AutoConfig;
-import com.raniejaderamiso.autoconfig.Property;
-import com.raniejaderamiso.autoconfig.sample.foo.SomethingElse;
+import io.polymorphicpanda.autoconfig.AutoConfig;
+import io.polymorphicpanda.autoconfig.Property;
+import io.polymorphicpanda.autoconfig.sample.foo.SomethingElse;
 
 /**
  * @author Ranie Jade Ramiso

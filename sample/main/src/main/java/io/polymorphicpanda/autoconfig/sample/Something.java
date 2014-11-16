@@ -1,4 +1,4 @@
-package com.raniejaderamiso.autoconfig.sample;
+package io.polymorphicpanda.autoconfig.sample;
 
 /**
  * @author Ranie Jade Ramiso

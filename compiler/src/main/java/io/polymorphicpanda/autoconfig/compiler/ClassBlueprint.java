@@ -1,4 +1,4 @@
-package com.raniejaderamiso.autoconfig.compiler;
+package io.polymorphicpanda.autoconfig.compiler;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import com.raniejaderamiso.autoconfig.Property;
+import io.polymorphicpanda.autoconfig.Property;
 
 /**
  * @author Ranie Jade Ramiso

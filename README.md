@@ -1,12 +1,15 @@
 # AutoConfig
-Generate config classes from properties file.
+A new way to load application configuration.
 
 ---
 
 ## Usage
-Define your interface.
+Define your config interface.
 ```java
-package com.autoconfig.example
+package io.polymorphicpanda.autoconfig.example
+
+import io.polymorphicpanda.autoconfig.example.somepackage.SomeEnum
+
 // ...
 @AutoConfig(
     resourceDir = StandardLocation.CLASS_PATH,
@@ -19,53 +22,42 @@ public interface AppConfig {
     
     @Property(key = "config.say.hello")
     String getSayHello();
+    
+    @Property(key = "config.some.enum")
+    SomeEnum getSomeEnum();
 }
 ```
 Create your properties file.
 ```ini
 config.some.int=1
 config.say.hello=Hello
+config.some.enum=SomeEnum.SOME_VALUE
 ```
 
 Make sure `autoconfig.jar` and `autoconfig-compiler.jar` is on your compile classpath.
 
-A class named `<interface-name>$$AutoConfig` will be generated at compile time and will be placed on the same package as the interface.
-```java
-package com.autoconfig.example
-// ...
-public final class AppConfig$$AutoConfig implements AppConfig {
-    @Override
-    public final int getSomeInt() {
-        return 1;
-    }
-    
-    @Override
-    public final String getSayHello() {
-        return "Hello";
-    }
-}
-```
+A class will be generated at compile time which can be loaded via `AutoConfigLoader`.
 
-Now, have fun.
 ```java
 public static void main(String[] args) {
-    AppConfig config = new AppConfig$$AutoConfig();
+    AppConfig config = AutoConfigLoader.load(AppConfig.class);
 }
 ```
 
 ## Supported Types
 1. All primitive types.
 2. java.lang.String
+3. Enums
 
 ## Maven
 ```xml
 <dependency>
-    <groupId>com.raniejaderamiso</groupId>
+    <groupId>io.polymorphicpanda</groupId>
     <artifactId>autoconfig</artifactId>
     <version>${autoconfig.version}</version>
 </dependency>
 <dependency>
-    <groupId>com.raniejaderamiso</groupId>
+    <groupId>io.polymorphicpanda</groupId>
     <artifactId>autoconfig-compiler</artifactId>
     <version>${autoconfig.version}</version>
     <optional>true</optional>
