@@ -1,5 +1,5 @@
 # AutoConfig
-A new way to load application configuration.
+A new approach to load application configuration.
 
 ---
 
@@ -34,7 +34,7 @@ config.say.hello=Hello
 config.some.enum=SomeEnum.SOME_VALUE
 ```
 
-Make sure `autoconfig.jar` and `autoconfig-compiler.jar` is on your compile classpath.
+Make sure `autoconfig.jar` and `autoconfig-compiler.jar` are in your compile classpath.
 
 A class will be generated at compile time which can be loaded via `AutoConfigLoader`.
 
