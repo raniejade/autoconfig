@@ -4,6 +4,7 @@ import javax.tools.StandardLocation;
 
 import com.raniejaderamiso.autoconfig.AutoConfig;
 import com.raniejaderamiso.autoconfig.Property;
+import com.raniejaderamiso.autoconfig.sample.foo.SomethingElse;
 
 /**
  * @author Ranie Jade Ramiso
@@ -30,4 +31,10 @@ public interface ApplicationConfig {
 
     @Property(key = "config.string")
     String getString();
+
+    @Property(key = "config.something")
+    Something getSomething();
+
+    @Property(key = "config.something.else")
+    SomethingElse getSomethingElse();
 }
