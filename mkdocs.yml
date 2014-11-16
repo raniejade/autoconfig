@@ -1,0 +1,7 @@
+site_name: AutoConfig
+pages:
+    - [index.md, Home]
+    - [setup.md, Setting Up]
+    - [usage.md, Usage]
+    - [limitations.md, Limitations]
+theme: readthedocs
