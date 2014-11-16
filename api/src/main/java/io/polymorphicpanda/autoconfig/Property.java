@@ -17,6 +17,7 @@ import java.lang.annotation.Target;
 public @interface Property {
     /**
      * The key used to fetch the return value of the generated method.
+     * @return property key.
      */
     String key();
 }

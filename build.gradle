@@ -1,4 +1,4 @@
 subprojects {
     project.version = ext.autoConfigVersion
-    project.group = 'com.raniejaderamiso'
+    project.group = 'io.polymorphicpanda'
 }

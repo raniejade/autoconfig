@@ -18,16 +18,19 @@ import java.lang.annotation.Target;
 public @interface AutoConfig {
     /**
      * Package where <code>filename</code> resides.
+     * @return package name.
      */
     String packageName() default "";
 
     /**
      * Name of the properties file used to generated the config class.
+     * @return name for the properties file.
      */
     String filename();
 
     /**
      * Location where to find the properties file.
+     * @return property file location.
      */
     StandardLocation resourceDir();
 }

@@ -13,7 +13,8 @@ public final class AutoConfigLoader {
      *
      * @param cls config interface.
      * @param classLoader {@link java.lang.ClassLoader} used to load the class.
-     * @return Instance of <code>cls</code>.
+     * @param <T> config interface type.
+     * @return Instance of <code>T</code>.
      */
     @SuppressWarnings("unchecked")
     public static <T> T load(Class<T> cls, ClassLoader classLoader) {
@@ -32,9 +33,9 @@ public final class AutoConfigLoader {
      * <p>Equivalent to: <code>AutoConfigLoader.load(cls, Thread.currentThread().getContextClassLoader())</code></p>
      *
      * @param cls config interface.
+     * @param <T> config interface type.
      * @return Instance of <code>cls</code>.
-     *
-     * @see {@link #load(Class, ClassLoader)}
+     * @see #load(Class, java.lang.ClassLoader)
      */
     public static <T> T load(Class<T> cls) {
         return load(cls, Thread.currentThread().getContextClassLoader());
