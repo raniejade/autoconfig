@@ -3,6 +3,7 @@ A new approach to load application configuration.
 
 Inspired by Android's `BuildConfig` and Google's [Auto Library](https://github.com/google/auto).
 
+Class documentation can be found [here](javadoc).
 
 ## License
 ```
@@ -28,6 +29,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
 
 ## Contributing
 Source code is available at [Github](https://github.com/raniejade/autoconfig).
