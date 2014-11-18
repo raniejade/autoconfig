@@ -15,10 +15,10 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment ->
                 signing.signPom(deployment)
+            }
 
-                uploadArchives.repositories.mavenDeployer.repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                    authentication(userName: osshrUsername, password: osshrPassword)
-                }
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(userName: osshrUsername, password: osshrPassword)
             }
 
             pom.project {
@@ -55,9 +55,11 @@ artifacts {
 
 gradle.taskGraph.whenReady { taskGraph ->
     if (taskGraph.allTasks.any { it instanceof Sign }) {
-        allprojects { ext."signing.keyId" = signingKeyId }
-        allprojects { ext."signing.secretKeyRingFile" = signingKeyFile }
-        allprojects { ext."signing.password" = signingPassword }
+        allprojects {
+            ext."signing.keyId" = signingKeyId
+            ext."signing.secretKeyRingFile" = signingKeyFile
+            ext."signing.password" = signingPassword
+        }
     }
 }
 
