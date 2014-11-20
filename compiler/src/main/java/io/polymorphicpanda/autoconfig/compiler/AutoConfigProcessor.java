@@ -5,7 +5,6 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
@@ -32,7 +31,6 @@ import static javax.tools.Diagnostic.Kind;
 /**
  * @author Ranie Jade Ramiso
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes("io.polymorphicpanda.autoconfig.AutoConfig")
 public class AutoConfigProcessor extends AbstractProcessor implements Messager {
 
@@ -66,6 +64,11 @@ public class AutoConfigProcessor extends AbstractProcessor implements Messager {
     @Override
     public void printMessage(Kind kind, CharSequence msg, Element e, AnnotationMirror a, AnnotationValue v) {
         getMessager().printMessage(kind, msg, e, a, v);
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 
     private void doProcess(RoundEnvironment roundEnv) {

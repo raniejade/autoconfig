@@ -1,5 +1,7 @@
 package io.polymorphicpanda.autoconfig.sample;
 
+import java.util.Arrays;
+
 import io.polymorphicpanda.autoconfig.AutoConfigLoader;
 
 /**
@@ -8,6 +10,7 @@ import io.polymorphicpanda.autoconfig.AutoConfigLoader;
 public class Main {
     public static void main(String[] args) {
         ApplicationConfig config = AutoConfigLoader.load(ApplicationConfig.class);
+        Arrays.asList().stream().forEach(o -> System.out.println(o.toString()));
 
         System.out.println("int: " + config.getInteger());
         System.out.println("double: " + config.getDouble());

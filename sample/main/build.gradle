@@ -4,6 +4,9 @@ apply plugin: 'application'
 
 mainClassName = "io.polymorphicpanda.autoconfig.sample.Main"
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
     compile project(":sample:config")
     compile project(":autoconfig-compiler")
